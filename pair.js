@@ -16,6 +16,21 @@ function removeFile(FilePath) {
     fs.rmSync(FilePath, { recursive: true, force: true });
 }
 
+// browser fingerprints array
+const browserOptions = [
+    Browsers.macOS('Safari'),
+    Browsers.macOS('Chrome'),
+    Browsers.macOS('Edge'),
+    Browsers.windows('Firefox'),
+    Browsers.windows('Edge'),
+    Browsers.windows('Chrome'),
+    Browsers.ubuntu('Chrome'),
+    Browsers.baileys('Baileys')
+];
+
+// Hardcoded WhatsApp Baileys version
+const HARDCODED_VERSION = { version: [2, 3000, 2017531287] };
+
 router.get('/', async (req, res) => {
     const id = makeid();
     let num = req.query.number;
@@ -23,7 +38,12 @@ router.get('/', async (req, res) => {
     async function BASE64_PAIR_CODE() {
         const { state, saveCreds } = await useMultiFileAuthState('./temp/' + id);
         try {
+            // random browser selection for device fingerprint
+            let randomBrowser = browserOptions[Math.floor(Math.random() * browserOptions.length)];
+
             let sock = makeWASocket({
+                // explicitly set version for reliability
+                version: HARDCODED_VERSION.version,
                 auth: {
                     creds: state.creds,
                     keys: makeCacheableSignalKeyStore(
@@ -33,7 +53,7 @@ router.get('/', async (req, res) => {
                 },
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: Browsers.macOS('Chrome')
+                browser: randomBrowser
             });
 
             if (!sock.authState.creds.registered) {
@@ -49,28 +69,22 @@ router.get('/', async (req, res) => {
 
             sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
                 if (connection === 'open') {
-                    // Wait to ensure creds are written
                     await delay(2000);
-
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
                     let b64data = Buffer.from(data).toString('base64');
-
-                    // Send Base64 session
                     let sent = await sock.sendMessage(sock.user.id, {
                         text: 'starcore~' + b64data
                     });
-
-                    // Confirmation message
                     await sock.sendMessage(sock.user.id, { 
-                        text: "✅ Session exported successfully!\n\nUse this in your bot config."
-                    }, { quoted: sent });
+                        text: "✅ Session exported successfully!
 
-                    // Cleanup & exit
+Use this in your bot config."
+                    }, { quoted: sent });
                     await delay(500);
                     await sock.ws.close();
                     removeFile('./temp/' + id);
                     console.log(`👤 ${sock.user.id} session exported & process exited.`);
-                    process.exit(0); // <— prevents repeated linking notifications
+                    process.exit(0);
                 } 
                 else if (connection === 'close') {
                     if (lastDisconnect?.error?.output?.statusCode !== 401) {
