@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Star Core | WhatsApp Bot Solutions</title>
+  <title> QUEEN RIAM | WhatsApp Bot By Hector </title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
@@ -114,7 +114,8 @@
 
     /* Hero Section */
     .hero {
-      padding: 8rem 0 4rem;
+      /* FIX: Increased top padding to ensure content clears the fixed navbar */
+      padding: 10rem 0 4rem; 
       text-align: center;
     }
 
@@ -368,7 +369,8 @@
       }
 
       .hero {
-        padding: 6rem 0 3rem;
+        /* Adjusted padding for smaller screens */
+        padding: 8rem 0 3rem; 
       }
 
       .hero h1 {
@@ -400,10 +402,9 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <header class="navbar">
     <div class="container navbar-container">
-      <a href="#" class="logo"><i class="fas fa-robot"></i> Star Core</a>
+      <a href="#" class="logo"><i class="fas fa-robot"></i> Riam Pair</a>
       <nav class="nav-links">
         <a href="#features">Features</a>
         <a href="#stats">Stats</a>
@@ -414,14 +415,12 @@
   </header>
 
   <main class="container">
-    <!-- Hero Section -->
     <section class="hero">
-      <h1>WhatsApp Bot Solutions</h1>
+      <h1> WhatsApp Bot </h1>
       <p>Advanced session management for WhatsApp bots. Get QR codes, pair codes, and deployment solutions in one place.</p>
       <a href="/qr" class="btn">Get Started</a>
     </section>
 
-    <!-- GitHub Stats -->
     <section id="stats" class="stats">
       <div class="stat-card">
         <div class="stat-number" id="github-stars">0</div>
@@ -441,7 +440,6 @@
       </div>
     </section>
 
-    <!-- Features -->
     <section id="features" class="features">
       <div class="feature-card">
         <div class="feature-icon">
@@ -465,29 +463,27 @@
         </div>
         <h3>Deploy</h3>
         <p>One-click deployment for your Star XD bot infrastructure.</p>
-        <a href="https://github.com/XdKing2/star-xd" class="btn btn-outline">Deploy Now</a>
+        <a href="https://github.com/DevKango/Queen-Riam" class="btn btn-outline">Deploy Now</a>
       </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="about">
-      <h2>About Star Core</h2>
+      <h2>About Riam Pair</h2>
       <p>We specialize in WhatsApp bot solutions that are powerful yet easy to use. Our tools help developers and businesses automate their WhatsApp communications efficiently.</p>
-      <p>With Star Core, you get reliable session management, quick deployment, and 24/7 support for all your bot needs.</p>
+      <p>You get reliable session management, quick deployment, and 24/7 support for all your bot needs.</p>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer id="contact">
     <div class="footer-grid">
       <div>
-        <div class="footer-logo">Star Core</div>
+        <div class="footer-logo">Riam Pair</div>
         <p>Advanced WhatsApp bot solutions</p>
         <div class="social-links">
-          <a href="https://youtube.com/@malvintech2" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.instagram.com/techlord01" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a href="https://t.me/malvintech" target="_blank"><i class="fab fa-telegram"></i></a>
-          <a href="https://github.com/XdKing2" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://youtube.com/@official_manuel" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://t.me/official_kango" target="_blank"><i class="fab fa-telegram"></i></a>
+          <a href="https://github.com/OfficialKango" target="_blank"><i class="fab fa-github"></i></a>
         </div>
       </div>
       <div class="footer-links">
@@ -495,29 +491,29 @@
         <ul>
           <li><a href="/qr">QR Sessions</a></li>
           <li><a href="/pair">Pair Codes</a></li>
-          <li><a href="https://github.com/XdKing2/Star-xd">Deployment</a></li>
+          <li><a href="https://github.com/DevKango/Queen-Riam">Deployment</a></li>
         </ul>
       </div>
       <div class="footer-links">
         <h3>Contact</h3>
         <ul>
-          <li>+263 71 475 7857</li>
+          <li>+233509977126</li>
           <li>WhatsApp Support</li>
           <li>24/7 Availability</li>
         </ul>
       </div>
     </div>
     <div class="copyright">
-      <p>© <span id="currentYear"></span> Star Core | Created by Malvin King</p> 
+      <p>© <span id="currentYear"></span> Riam Pair | Created by Hector Manuel</p> 
     </div>
   </footer>
 
-  <!-- GitHub API Script -->
   <script>
     // GitHub API for repo stats
     async function fetchGitHubStats() {
       try {
-        const response = await fetch('https://api.github.com/repos/XdKing2/Star-XD');
+        // NOTE: Changed the URL to the standard GitHub API URL
+        const response = await fetch('https://api.github.com/repos/DevKango/Queen-Riam'); 
         const data = await response.json();
         
         // Animate numbers
@@ -568,11 +564,10 @@
     });
   </script>
 
-  <!-- GetButton.io widget -->
   <script type="text/javascript">
     (function () {
       var options = {
-        whatsapp: "+263714757857",
+        whatsapp: "+233509977126",
         call_to_action: "Need help? Message us",
         position: "right",
       };
