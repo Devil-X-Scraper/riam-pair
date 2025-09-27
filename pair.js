@@ -16,7 +16,7 @@ function removeFile(FilePath) {
     fs.rmSync(FilePath, { recursive: true, force: true });
 }
 
-// browser fingerprints array
+// Array of browser fingerprints
 const browserOptions = [
     Browsers.macOS('Safari'),
     Browsers.macOS('Chrome'),
@@ -28,7 +28,7 @@ const browserOptions = [
     Browsers.baileys('Baileys')
 ];
 
-// Hardcoded WhatsApp Baileys version
+// Hardcoded Baileys version (ensure compatibility with WhatsApp as of this bot version)
 const HARDCODED_VERSION = { version: [2, 3000, 2017531287] };
 
 router.get('/', async (req, res) => {
@@ -37,12 +37,11 @@ router.get('/', async (req, res) => {
 
     async function BASE64_PAIR_CODE() {
         const { state, saveCreds } = await useMultiFileAuthState('./temp/' + id);
+        let connectionClosed = false;
         try {
-            // random browser selection for device fingerprint
+            // Use a random browser fingerprint
             let randomBrowser = browserOptions[Math.floor(Math.random() * browserOptions.length)];
-
             let sock = makeWASocket({
-                // explicitly set version for reliability
                 version: HARDCODED_VERSION.version,
                 auth: {
                     creds: state.creds,
@@ -68,27 +67,35 @@ router.get('/', async (req, res) => {
             sock.ev.on('creds.update', saveCreds);
 
             sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
+                if (connectionClosed) return;
                 if (connection === 'open') {
                     await delay(2000);
-                    let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-                    let b64data = Buffer.from(data).toString('base64');
-                    let sent = await sock.sendMessage(sock.user.id, {
-                        text: 'starcore~' + b64data
-                    });
-                    await sock.sendMessage(sock.user.id, { 
-                        text: "✅ Session exported successfully!
+                    try {
+                        let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
+                        let b64data = Buffer.from(data).toString('base64');
+                        let sent = await sock.sendMessage(sock.user.id, {
+                            text: 'starcore~' + b64data
+                        });
+                        await sock.sendMessage(sock.user.id, { 
+                            text: "✅ Session exported successfully!
 
 Use this in your bot config."
-                    }, { quoted: sent });
+                        }, { quoted: sent });
+                    } catch (err) {
+                        console.error("Error sending exported session or confirmation:", err.message);
+                    }
                     await delay(500);
                     await sock.ws.close();
                     removeFile('./temp/' + id);
-                    console.log(`👤 ${sock.user.id} session exported & process exited.`);
-                    process.exit(0);
+                    connectionClosed = true;
+                    // Do NOT call process.exit(); just finish handler
                 } 
                 else if (connection === 'close') {
                     if (lastDisconnect?.error?.output?.statusCode !== 401) {
                         console.log("Connection closed (not logout). Not retrying to avoid spam.");
+                        connectionClosed = true;
+                        await sock.ws.close();
+                        removeFile('./temp/' + id);
                     }
                 }
             });
@@ -98,7 +105,7 @@ Use this in your bot config."
             if (!res.headersSent) {
                 res.send({ code: 'Service Currently Unavailable' });
             }
-            process.exit(1);
+            // Do NOT call process.exit(); return gracefully
         }
     }
 
