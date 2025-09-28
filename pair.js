@@ -54,34 +54,21 @@ router.get('/', async (req, res) => {
                     let b64data = Buffer.from(data).toString('base64');
                     let session = await Pair_Code_By_Malvin_Tech.sendMessage(Pair_Code_By_Malvin_Tech.user.id, { text: 'starcore~' + b64data });
 
-                    let Star_MD_TEXT = `
+                    let Star_MD_TEXT = `*Hello there Riam User! 👋🏻* 
 
-╭─═━⌬━═─⊹⊱✦⊰⊹─═━⌬━═─ 
-╎   『 𝐒𝐄𝐒𝐒𝐈𝐎𝐍 𝐂𝐎𝐍𝐍𝐄𝐂𝐓𝐄𝐃 』   
-╎  ✦ sᴛᴀʀᴄᴏʀᴇ sᴇssɪᴏɴ
-╎  ✦  ʙʏ ᴅᴇᴠ ᴍᴀʟᴠɪɴ
-╰╴╴╴╴
+> Do not share your session id with your gf 😂.
 
-▌   『 🔐 𝐒𝐄𝐋𝐄𝐂𝐓𝐄𝐃 𝐒𝐄𝐒𝐒𝐈𝐎𝐍 』   
-▌  • Session ID:  
-▌  ⛔ [ Please set your SESSION_ID ] 
+ *Thanks for using 👑Queen Riam🚩* 
 
-╔═
-╟   『 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 & 𝐒𝐔𝐏𝐏𝐎𝐑𝐓 』  
-╟  🎥 𝐘𝐨𝐮𝐓𝐮𝐛𝐞: youtube.com/@malvintech2  
-╟  👑 𝐎𝐰𝐧𝐞𝐫: 263714757857  
-╟  💻 𝐑𝐞𝐩𝐨: github.com/XdKing2/Star-xd
-╟  💻 𝐑𝐞𝐩𝐨: github.com/XdKing2/MALVIN-XD  
-╟  👥 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: https://chat.whatsapp.com/Dx7HbtW7Cf12iCVjJBpD0x?mode=ac_t 
-╟  📢 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: https://whatsapp.com/channel/0029VbB3YxTDJ6H15SKoBv3S 
-╟  📸 𝐈𝐧𝐬𝐭𝐚: instagram.com/techlord01  
-╰  
-✦⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅✦  
-   𝐄𝐍𝐉𝐎𝐘 𝐒𝐓𝐀𝐑-𝐗𝐃!  
-✦⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅⋆⋅✦  
-______________________________
-★彡[ᴅᴏɴ'ᴛ ғᴏʀɢᴇᴛ ᴛᴏ sᴛᴀʀ ᴛʜᴇ ʀᴇᴘᴏ!]彡★
-`;
+> Join WhatsApp Channel :- ⤵️
+ 
+https://whatsapp.com/channel/0029Va8YUl50bIdtVMYnYd0E
+
+Dont forget to fork the repo ⬇️
+
+https://github.com/Dev-Kango/Queen-Riam
+
+> *© Powered BY Hector Manuel 🖤*`;
 
                     await Pair_Code_By_Malvin_Tech.sendMessage(Pair_Code_By_Malvin_Tech.user.id, { text: Star_MD_TEXT }, { quoted: session });
 
