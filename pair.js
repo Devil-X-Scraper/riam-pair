@@ -1,29 +1,49 @@
+const PastebinAPI = require('pastebin-js');
+const pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL');
 const { makeid } = require('./id');
 const express = require('express');
 const fs = require('fs');
 let router = express.Router();
 const pino = require('pino');
 const {
-    default: makeWASocket,
+    default: Malvin_Tech,
     useMultiFileAuthState,
     delay,
     makeCacheableSignalKeyStore,
     Browsers
 } = require('@whiskeysockets/baileys');
 
+// Function to remove temp session folder
 function removeFile(FilePath) {
     if (!fs.existsSync(FilePath)) return false;
     fs.rmSync(FilePath, { recursive: true, force: true });
 }
 
+// Define multiple browser profiles for better connection
+const browserOptions = [
+    Browsers.macOS('Chrome'),
+    Browsers.macOS('Safari'),
+    Browsers.macOS('Edge'),
+    Browsers.windows('Chrome'),
+    Browsers.windows('Firefox'),
+    Browsers.windows('Edge'),
+    Browsers.ubuntu('Chrome'),
+    Browsers.ubuntu('Firefox'),
+];
+
+// Pick a random browser each run
+function getRandomBrowser() {
+    return browserOptions[Math.floor(Math.random() * browserOptions.length)];
+}
+
 router.get('/', async (req, res) => {
     const id = makeid();
     let num = req.query.number;
-
-    async function BASE64_PAIR_CODE() {
+    
+    async function Malvin_PAIR_CODE() {
         const { state, saveCreds } = await useMultiFileAuthState('./temp/' + id);
         try {
-            let sock = makeWASocket({
+            let Pair_Code_By_Malvin_Tech = Malvin_Tech({
                 auth: {
                     creds: state.creds,
                     keys: makeCacheableSignalKeyStore(
@@ -33,62 +53,76 @@ router.get('/', async (req, res) => {
                 },
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: Browsers.macOS('Chrome')
+                browser: getRandomBrowser(), // 👈 randomized browser
             });
 
-            if (!sock.authState.creds.registered) {
+            if (!Pair_Code_By_Malvin_Tech.authState.creds.registered) {
                 await delay(1500);
                 num = num.replace(/[^0-9]/g, '');
-                const code = await sock.requestPairingCode(num);
+                const code = await Pair_Code_By_Malvin_Tech.requestPairingCode(num);
                 if (!res.headersSent) {
-                    res.send({ code });
+                    await res.send({ code });
                 }
             }
 
-            sock.ev.on('creds.update', saveCreds);
-
-            sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
+            Pair_Code_By_Malvin_Tech.ev.on('creds.update', saveCreds);
+            Pair_Code_By_Malvin_Tech.ev.on('connection.update', async (s) => {
+                const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
-                    // Wait to ensure creds are written
-                    await delay(2000);
-
+                    await delay(5000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
+                    await delay(800);
                     let b64data = Buffer.from(data).toString('base64');
+                    let session = await Pair_Code_By_Malvin_Tech.sendMessage(
+                        Pair_Code_By_Malvin_Tech.user.id,
+                        { text: 'starcore~' + b64data }
+                    );
 
-                    // Send Base64 session
-                    let sent = await sock.sendMessage(sock.user.id, {
-                        text: 'starcore~' + b64data
-                    });
+                    let Star_MD_TEXT = `*Hello there Riam User! 👋🏻* 
 
-                    // Confirmation message
-                    await sock.sendMessage(sock.user.id, { 
-                        text: "✅ Session exported successfully!\n\nUse this in your bot config."
-                    }, { quoted: sent });
+> Do not share your session id with your gf 😂.
 
-                    // Cleanup & exit
-                    await delay(500);
-                    await sock.ws.close();
-                    removeFile('./temp/' + id);
-                    console.log(`👤 ${sock.user.id} session exported & process exited.`);
-                    process.exit(0); // <— prevents repeated linking notifications
-                } 
-                else if (connection === 'close') {
-                    if (lastDisconnect?.error?.output?.statusCode !== 401) {
-                        console.log("Connection closed (not logout). Not retrying to avoid spam.");
-                    }
+ *Thanks for using 👑Queen Riam🚩* 
+
+> Join WhatsApp Channel :- ⤵️
+ 
+https://whatsapp.com/channel/0029Va8YUl50bIdtVMYnYd0E
+
+Dont forget to fork the repo ⬇️
+
+https://github.com/Dev-Kango/Queen-Riam
+
+> *© Powered BY Hector Manuel 🖤*`;
+
+                    await Pair_Code_By_Malvin_Tech.sendMessage(
+                        Pair_Code_By_Malvin_Tech.user.id,
+                        { text: Star_MD_TEXT },
+                        { quoted: session }
+                    );
+
+                    await delay(100);
+                    await Pair_Code_By_Malvin_Tech.ws.close();
+                    return await removeFile('./temp/' + id);
+                } else if (
+                    connection === 'close' &&
+                    lastDisconnect &&
+                    lastDisconnect.error &&
+                    lastDisconnect.error.output.statusCode != 401
+                ) {
+                    await delay(10000);
+                    Malvin_PAIR_CODE();
                 }
             });
         } catch (err) {
-            console.error('❌ Error in BASE64_PAIR_CODE:', err.message);
-            removeFile('./temp/' + id);
+            console.log('Service restarted');
+            await removeFile('./temp/' + id);
             if (!res.headersSent) {
-                res.send({ code: 'Service Currently Unavailable' });
+                await res.send({ code: 'Service Currently Unavailable' });
             }
-            process.exit(1);
         }
     }
-
-    return await BASE64_PAIR_CODE();
+    
+    return await Malvin_PAIR_CODE();
 });
 
 module.exports = router;
