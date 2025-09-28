@@ -11,7 +11,7 @@
   "author": "Malvin King",
   "license": "GPL-3.0 license",
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.7.18"
+    "@whiskeysockets/baileys": "^6.7.18",
     "qrcode": "^1.5.3",
     "awesome-phonenumber": "^2.64.0",
     "pino": "^8.1.0",
