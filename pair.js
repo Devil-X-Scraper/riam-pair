@@ -75,7 +75,7 @@ router.get('/', async (req, res) => {
                     let b64data = Buffer.from(data).toString('base64');
                     let session = await Pair_Code_By_Malvin_Tech.sendMessage(
                         Pair_Code_By_Malvin_Tech.user.id,
-                        { text: 'starcore~' + b64data }
+                        { text: 'RIAM~' + b64data }
                     );
 
                     let Star_MD_TEXT = `*Hello there Riam User! 👋🏻* 
